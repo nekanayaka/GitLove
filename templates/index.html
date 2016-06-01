@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>GitLove</title>
+    <title>Home - GitLove</title>
     <link href="/static/css/css.css" rel="stylesheet">
 </head>
 <body>
@@ -10,7 +10,9 @@
         <p>GitLove</p>
     </div>
     <div id="container">
-        <button class="signIn">Sign in<a href="#"></a></button>
+        <form action="{{ url_for('sign_in') }}" method="post">
+            <input type="submit" value="Sign in" class="signIn">
+        </form>
     </div>
 </body>
 </html>
