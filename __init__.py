@@ -12,6 +12,8 @@ from flask_mysqldb import MySQL
 
 app = Flask(__name__)
 
+app.secret_key = 'db69d2075d3a384312be02455847cd95dda8a37c538d1541'
+
 app.config['MYSQL_USER'] = 'nimna'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'gitlove'
@@ -36,24 +38,30 @@ def login_required(f):
 def index():
     return render_template('index.html')
 
-@app.route('/sign_in', methods=['POST'])
+@app.route('/sign_in', methods=['GET','POST'])
 def sign_in():
     return render_template('sign_in.html')
     
-@app.route('/login_action', methods=['POST'])
-def login_action():
+@app.route('/login', methods=['POST'])
+def login():
     username = request.form['username']
     password = request.form['password']
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT * FROM users WHERE `username` = '%s' and `password` = '%s'" % (username, password))
     data = cursor.fetchone()
     if data is None:
-        return "Username or password is wrong."
+        error = "Username or password is wrong."
     else:
         session['logged_in'] = True
-        return "Login sucessful!"
+        return redirect(url_for('profile'))
+    return render_template('sign_in.html', error=error)
 
-@app.route('/sign_up', methods=['POST'])
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('index'))
+
+@app.route('/sign_up', methods=['GET','POST'])
 def sign_up():
     return render_template('sign_up.html')
     
@@ -67,10 +75,16 @@ def sign_up_action():
         cursor = mysql.connection.cursor()
         cursor.execute("INSERT INTO users (`username`, `email`, `password`) VALUES ('%s', '%s', '%s')" % (username, email, password))
         mysql.connection.commit()
-        print "Profile created successfully."
+        success =  "Profile created successfully."
+        return render_template('index.html', success=success)
     else:
-        print "Passwords don't match."
-    return render_template('index.html')
+        error = "Passwords don't match."
+        return render_template('sign_up.html', error=error)
+
+
+@app.route('/profile', methods=['GET','POST'])
+def profile():
+    return render_template('profile.html')
             
 
 # app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)

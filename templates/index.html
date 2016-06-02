@@ -6,16 +6,29 @@
     <link href="/static/css/css.css" rel="stylesheet">
 </head>
 <body>
+    {% if success %}
+        <div class="alert alert-success">
+            <p>{{success}}</p>
+        </div>
+    {% endif %}
     <div id="header">
         <p>GitLove</p>
     </div>
+    <div class="nav">
+        <ul class="pull-right">
+            <li>
+                <form action="{{ url_for('sign_in') }}" method="post">
+                    <input type="submit" value="Sign in" class="btn btn-primary">
+                </form>
+            </li>
+            <li>
+                <form action="{{ url_for('sign_up') }}" method="post">
+                    <input type="submit" value="Sign up" class="btn btn-primary">
+                </form>
+            </li>
+        </ul>
+    </div>
     <div id="container">
-        <form action="{{ url_for('sign_in') }}" method="post">
-            <input type="submit" value="Sign in" class="signIn">
-        </form>
-        <form action="{{ url_for('sign_up') }}" method="post">
-            <input type="submit" value="Sign up" class="signUp">
-        </form>
     </div>
 </body>
 </html>
