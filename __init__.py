@@ -47,7 +47,7 @@ def login():
     username = request.form['username']
     password = request.form['password']
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM users WHERE `username` = '%s' and `password` = '%s'" % (username, password))
+    cursor.execute("SELECT * FROM users WHERE `username` = '%s' and `password` = '%s'" % (escape(username), escape(password)))
     data = cursor.fetchone()
     if data is None:
         error = "Username or password is wrong."
@@ -73,7 +73,7 @@ def sign_up_action():
     confirm_password = request.form['confirm_password']
     if password == confirm_password:
         cursor = mysql.connection.cursor()
-        cursor.execute("INSERT INTO users (`username`, `email`, `password`) VALUES ('%s', '%s', '%s')" % (username, email, password))
+        cursor.execute("INSERT INTO users (`username`, `email`, `password`) VALUES ('%s', '%s', '%s')" % (escape(username), escape(email), escape(password)))
         mysql.connection.commit()
         success =  "Profile created successfully."
         return render_template('index.html', success=success)
