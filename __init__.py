@@ -7,18 +7,17 @@ import os
 import sys
 from flask import *
 from functools import wraps
-from flaskext.mysql import MySQL
+from flask_mysqldb import MySQL
 # from werkzeug import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
-mysql = MySQL()
+app.config['MYSQL_USER'] = 'nimna'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'gitlove'
+app.config['MYSQL_HOST'] = 'localhost'
 
-app.config['MYSQL_DATABASE_USER'] = 'nimna'
-app.config['MYSQL_DATABASE_PASSWORD'] = ''
-app.config['MYSQL_DATABASE_DB'] = 'gitlove'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-mysql.init_app(app)
+mysql = MySQL(app)
 
 # reload(sys)
 # sys.setdefaultencoding("utf-8")
@@ -45,7 +44,7 @@ def sign_in():
 def login_action():
     username = request.form['username']
     password = request.form['password']
-    cursor = mysql.connect().cursor()
+    cursor = mysql.connection.cursor()
     cursor.execute("SELECT * FROM users WHERE `username` = '%s' and `password` = '%s'" % (username, password))
     data = cursor.fetchone()
     if data is None:
@@ -65,16 +64,16 @@ def sign_up_action():
     password = request.form['password']
     confirm_password = request.form['confirm_password']
     if password == confirm_password:
-        cursor = mysql.connect().cursor()
+        cursor = mysql.connection.cursor()
         cursor.execute("INSERT INTO users (`username`, `email`, `password`) VALUES ('%s', '%s', '%s')" % (username, email, password))
-        mysql.connect().commit()
+        mysql.connection.commit()
         print "Profile created successfully."
     else:
         print "Passwords don't match."
     return render_template('index.html')
             
 
-app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
+# app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug = True)
