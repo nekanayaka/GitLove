@@ -36,7 +36,16 @@ def login_required(f):
     
 @app.route('/')
 def index():
-    return render_template('index.html')
+    if 'logged_in' in session:
+        login_status = True
+    else:
+        login_status = False
+
+    username = ''
+    if 'username' in session:
+        username = username
+
+    return render_template('index.html', login_status=login_status, username=username)
 
 @app.route('/sign_in', methods=['GET','POST'])
 def sign_in():
@@ -53,6 +62,7 @@ def login():
         error = "Username or password is wrong."
     else:
         session['logged_in'] = True
+        session['user'] = username
         return redirect(url_for('profile'))
     return render_template('sign_in.html', error=error)
 

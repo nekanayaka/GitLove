@@ -14,20 +14,29 @@
     <div id="header">
         <p>GitLove</p>
     </div>
-    <div class="nav">
-        <ul class="pull-right">
-            <li>
-                <form action="{{ url_for('sign_in') }}" method="post">
-                    <input type="submit" value="Sign in" class="btn btn-primary btn-lg">
-                </form>
-            </li>
-            <li>
-                <form action="{{ url_for('sign_up') }}" method="post">
-                    <input type="submit" value="Sign up" class="btn btn-success btn-lg">
-                </form>
-            </li>
-        </ul>
-    </div>
+    {% if login_status == True %}
+        <div class="nav">
+            <ul class="pull-right">
+                <li>Hello {{ username }}!</li>
+            </ul>
+        </div>
+    {% endif %}
+    {% if login_status == False %}
+        <div class="nav">
+            <ul class="pull-right">
+                <li>
+                    <form action="{{ url_for('sign_in') }}" method="post">
+                        <input type="submit" value="Sign in" class="btn btn-primary btn-lg">
+                    </form>
+                </li>
+                <li>
+                    <form action="{{ url_for('sign_up') }}" method="post">
+                        <input type="submit" value="Sign up" class="btn btn-success btn-lg">
+                    </form>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
     <div id="container">
     </div>
 </body>
