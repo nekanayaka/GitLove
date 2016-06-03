@@ -78,9 +78,9 @@
                     <p>Your repositories</p>
                     <input type="submit" value="Create repository" class="btn btn-success btn-lg">
                     <ul class="list-group">
-                      <li class="list-group-item">Repo 1</li>
-                      <li class="list-group-item">Repo 2</li>
-                      <li class="list-group-item">Repo 3</li>
+                      {% for repo in repos %}
+                          <li class="list-group-item">{{ repo }}</li>
+                      {% endfor %}
                     </ul>
                 </form>
             </div>

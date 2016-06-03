@@ -98,7 +98,13 @@ def register():
 
 @app.route('/profile/<username>', methods=['GET','POST'])
 def profile(username):
-    return render_template('profile.html', username=username)
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT `name` FROM `repositories` WHERE user = '%s'" % escape(username))
+    data = cursor.fetchall()
+    repos = []
+    for repo_name in data:
+        repos.append(repo_name)
+    return render_template('profile.html', username=username, repos=repos)
 
 @app.route('/create_repo', methods=['GET', 'POST'])
 def create_repo():
