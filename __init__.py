@@ -6,6 +6,7 @@ Purpose: Git Service Provider
 import os
 import sys
 import hashlib
+import commands
 from flask import *
 from functools import wraps
 from flask_mysqldb import MySQL
@@ -88,6 +89,7 @@ def register():
         cursor.execute("INSERT INTO users (`name`, `username`, `email`, `password`) VALUES ('%s', '%s', '%s', '%s')" % (escape(name), escape(username), escape(email), escape(password)))
         mysql.connection.commit()
         success =  "Profile created successfully."
+        commands.getstatusoutput("mkdir repositories/%s" % escape(username))
         return render_template('index.html', success=success)
     else:
         error = "Passwords don't match."
@@ -112,10 +114,12 @@ def create_repo_action():
     mysql.connection.commit()
     # I will have to add validation here!
     success = "Repository %s created!" % repo_name
+    commands.getstatusoutput("mkdir repositories/%s/%s" % (escape(username), escape(repo_name)))
+    commands.getstatusoutput("git init --bare repositories/%s/%s" % (escape(username), escape(repo_name)))
     return render_template('profile.html', username=username, success=success)
             
 
-# app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
+app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug = True)

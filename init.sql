@@ -15,7 +15,6 @@ CREATE TABLE repositories (
 `description` VARCHAR(100) NOT NULL,
 `user` VARCHAR(30) NOT NULL,
 `createdAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-PRIMARY KEY (`id`),
 INDEX `fk_user` (`user`),
 CONSTRAINT `fk_user` FOREIGN KEY (`user`) REFERENCES `users` (`username`)
 );
