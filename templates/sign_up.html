@@ -1,29 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Sign up - GitLove</title>
-    <link href="/static/css/css.css" rel="stylesheet">
-</head>
-<body>
-    <form class="form-horizontal" action="sign_up_action" method="post">
-        <fieldset>
-            <legend>Sign up</legend>
-            <div class="form-group"> 
-              <div class="col-md-4">
-                  <input id="username" name="username" type="text" placeholder="Username" class="form-control input-md" required="">
-                  <input id="email" name="email" type="text" placeholder="Email" class="form-control input-md" required="">
-                  <input id="password" name="password" type="password" placeholder="Password" class="form-control input-md" required="">
-                  <input id="confirm_password" name="confirm_password" type="password" placeholder="Confrim Password" class="form-control input-md" required="">
-                  <input type="submit" id="submit" name="submit" value="Sign up" class="btn btn-primary">
-              </div>
+    <head> 
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+
+		<!-- Website CSS style -->
+		<link rel="stylesheet" type="text/css" href="/static/css/sign_up.css">
+
+		<!-- Website Font style -->
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+		
+		<!-- Google Fonts -->
+		<link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+		<link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+		
+		<title>Sign up - GitLove</title>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row main">
+				<div class="panel-heading">
+	               <div class="panel-title text-center">
+	               		<h1 class="title">GitLove</h1>
+	               		<hr />
+	               	</div>
+	            </div> 
+				<div class="main-login main-center">
+					<form class="form-horizontal" method="post" action="register">
+						
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">Your Name</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name" required/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="email" class="cols-sm-2 control-label">Your Email</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email" required/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="username" class="cols-sm-2 control-label">Username</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your Username" required/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="password" class="cols-sm-2 control-label">Password</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+									<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password" required/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="confirm_password" class="cols-sm-2 control-label">Confirm Password</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+									<input type="password" class="form-control" name="confirm_password" id="confirm_password"  placeholder="Confirm your Password" required/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group ">
+							<input type="submit" value="Register" class="btn btn-primary btn-lg btn-block login-button"/>
+						</div>
+						<div class="login-register">
+				            <a href="{{ url_for('sign_in') }}">Login</a>
+				         </div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="assets/js/bootstrap.js"></script>
+		{% if error %}
+            <div class="alert alert-danger">
+                {{ error }}
             </div>
-        </fieldset>
-    </form>
-    {% if error %}
-        <div class="alert alert-danger">
-            {{ error }}
-        </div>
-    {% endif %}
-</body>
+        {% endif %}
+	</body>
 </html>

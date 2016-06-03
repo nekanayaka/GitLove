@@ -36,16 +36,7 @@ def login_required(f):
     
 @app.route('/')
 def index():
-    if 'logged_in' in session:
-        login_status = True
-    else:
-        login_status = False
-
-    username = ''
-    if 'username' in session:
-        username = username
-
-    return render_template('index.html', login_status=login_status, username=username)
+    return render_template('index.html')
 
 @app.route('/sign_in', methods=['GET','POST'])
 def sign_in():
@@ -62,8 +53,7 @@ def login():
         error = "Username or password is wrong."
     else:
         session['logged_in'] = True
-        session['user'] = username
-        return redirect(url_for('profile'))
+        return redirect(url_for('profile', username=username))
     return render_template('sign_in.html', error=error)
 
 @app.route('/logout')
@@ -75,15 +65,16 @@ def logout():
 def sign_up():
     return render_template('sign_up.html')
     
-@app.route('/sign_up_action', methods=['POST'])
-def sign_up_action():
+@app.route('/register', methods=['POST'])
+def register():
+    name = request.form['name']
     username = request.form['username']
     email = request.form['email']
     password = request.form['password']
     confirm_password = request.form['confirm_password']
     if password == confirm_password:
         cursor = mysql.connection.cursor()
-        cursor.execute("INSERT INTO users (`username`, `email`, `password`) VALUES ('%s', '%s', '%s')" % (escape(username), escape(email), escape(password)))
+        cursor.execute("INSERT INTO users (`name`, `username`, `email`, `password`) VALUES ('%s', '%s', '%s', '%s')" % (escape(name), escape(username), escape(email), escape(password)))
         mysql.connection.commit()
         success =  "Profile created successfully."
         return render_template('index.html', success=success)
@@ -92,12 +83,12 @@ def sign_up_action():
         return render_template('sign_up.html', error=error)
 
 
-@app.route('/profile', methods=['GET','POST'])
-def profile():
-    return render_template('profile.html')
+@app.route('/profile/<username>', methods=['GET','POST'])
+def profile(username):
+    return render_template('profile.html', username=username)
             
 
-# app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
+app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug = True)
