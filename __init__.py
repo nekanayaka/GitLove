@@ -5,6 +5,7 @@ Purpose: Git Service Provider
 """
 import os
 import sys
+import hashlib
 from flask import *
 from functools import wraps
 from flask_mysqldb import MySQL
@@ -47,7 +48,7 @@ def login():
     username = request.form['username']
     password = request.form['password']
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM users WHERE `username` = '%s' and `password` = '%s'" % (escape(username), escape(password)))
+    cursor.execute("SELECT * FROM users WHERE `username` = '%s' and `password` = SHA1('%s')" % (escape(username), escape(password)))
     data = cursor.fetchone()
     if data is None:
         error = "Username or password is wrong."
@@ -70,8 +71,10 @@ def register():
     name = request.form['name']
     username = request.form['username']
     email = request.form['email']
-    password = request.form['password']
-    confirm_password = request.form['confirm_password']
+    password_hash = hashlib.sha1(request.form['password'])
+    password = password_hash.hexdigest()
+    confirm_password_hash = hashlib.sha1(request.form['confirm_password'])
+    confirm_password = confirm_password_hash.hexdigest()
     if password == confirm_password:
         cursor = mysql.connection.cursor()
         cursor.execute("INSERT INTO users (`name`, `username`, `email`, `password`) VALUES ('%s', '%s', '%s', '%s')" % (escape(name), escape(username), escape(email), escape(password)))
@@ -88,7 +91,7 @@ def profile(username):
     return render_template('profile.html', username=username)
             
 
-app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
+# app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug = True)
