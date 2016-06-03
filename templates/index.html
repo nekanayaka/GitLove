@@ -49,16 +49,26 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                  <ul class="nav navbar-nav pull-right">
-                    <li>
-                        <form action="{{ url_for('sign_in') }}" method="post">
-                            <input type="submit" value="Sign in" class="btn btn-primary btn-lg">
-                        </form>
-                    </li>
-                    <li>
-                        <form action="{{ url_for('sign_up') }}" method="post">
-                            <input type="submit" value="Sign up" class="btn btn-success btn-lg">
-                        </form>
-                    </li>
+                    {% if login_status == True %}
+                        <li>
+                            <a>Signed in as {{ username }}</a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('logout') }}">Logout</a>
+                        </li>
+                    {% endif %}
+                     {% if login_status == False %}
+                        <li>
+                            <form action="{{ url_for('sign_in') }}" method="post">
+                                <input type="submit" value="Sign in" class="btn btn-primary btn-lg">
+                            </form>
+                        </li>
+                        <li>
+                            <form action="{{ url_for('sign_up') }}" method="post">
+                                <input type="submit" value="Sign up" class="btn btn-success btn-lg">
+                            </form>
+                        </li>
+                     {% endif %}
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
