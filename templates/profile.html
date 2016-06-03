@@ -11,6 +11,8 @@
 
     <title>Profile - GitLove</title>
 
+    <link rel="stylesheet" type="text/css" href="/static/css/profile.css">
+
     <!-- Bootstrap Core CSS -->
     <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 
@@ -71,9 +73,16 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1>GitLove for the love of Git</h1>
-                <p class="lead">GitLove is a new version control system. Currently I am offering free unlimited repositories for the users.</p>
+            <div class="col-lg-12 text-center body">
+                <form action="{{ url_for('create_repo') }}" method="post">
+                    <p>Your repositories</p>
+                    <input type="submit" value="Create repository" class="btn btn-success btn-lg">
+                    <ul class="list-group">
+                      <li class="list-group-item">Repo 1</li>
+                      <li class="list-group-item">Repo 2</li>
+                      <li class="list-group-item">Repo 3</li>
+                    </ul>
+                </form>
             </div>
         </div>
         <!-- /.row -->

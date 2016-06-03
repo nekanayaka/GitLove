@@ -97,6 +97,22 @@ def register():
 @app.route('/profile/<username>', methods=['GET','POST'])
 def profile(username):
     return render_template('profile.html', username=username)
+
+@app.route('/create_repo', methods=['GET', 'POST'])
+def create_repo():
+    return render_template('create_repo.html')
+
+@app.route('/create_repo_action', methods=['POST'])
+def create_repo_action():
+    repo_name = request.form['repo_name']
+    description = request.form['description']
+    username = session['username']
+    cursor = mysql.connection.cursor()
+    cursor.execute("INSERT INTO `repositories`(`name`, `description`, `user`, `createdAt`) VALUES('%s', '%s', '%s', CURRENT_TIMESTAMP)" % (escape(repo_name), escape(description), escape(username)))
+    mysql.connection.commit()
+    # I will have to add validation here!
+    success = "Repository %s created!" % repo_name
+    return render_template('profile.html', username=username, success=success)
             
 
 # app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
