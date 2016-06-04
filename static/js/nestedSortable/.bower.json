@@ -1,0 +1,13 @@
+{
+  "name": "nestedSortable",
+  "homepage": "https://github.com/mjsarfatti/nestedSortable",
+  "_release": "6c6b715d8e",
+  "_resolution": {
+    "type": "branch",
+    "branch": "2.0alpha",
+    "commit": "6c6b715d8ec49f14197ae8997ef6e3cb820be818"
+  },
+  "_source": "git://github.com/mjsarfatti/nestedSortable.git",
+  "_target": "2.0alpha",
+  "_originalSource": "nestedSortable"
+}

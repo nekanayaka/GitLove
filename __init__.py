@@ -97,6 +97,7 @@ def register():
 
 
 @app.route('/profile/<username>', methods=['GET','POST'])
+@login_required
 def profile(username):
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT `name` FROM `repositories` WHERE user = '%s'" % escape(username))
@@ -107,10 +108,12 @@ def profile(username):
     return render_template('profile.html', username=username, repos=repos)
 
 @app.route('/create_repo', methods=['GET', 'POST'])
+@login_required
 def create_repo():
     return render_template('create_repo.html')
 
 @app.route('/create_repo_action', methods=['POST'])
+@login_required
 def create_repo_action():
     repo_name = request.form['repo_name']
     description = request.form['description']
@@ -123,6 +126,15 @@ def create_repo_action():
     commands.getstatusoutput("mkdir repositories/%s/%s" % (escape(username), escape(repo_name)))
     commands.getstatusoutput("git init --bare repositories/%s/%s" % (escape(username), escape(repo_name)))
     return redirect(url_for('profile', username=username, success=success))
+
+# @app.route('/repository/<repo_name>', methods=['POST'])
+# def repository():
+#     return ""
+@app.route('/profile/<username>/<repo_name>', methods=['GET','POST'])
+def repository(username, repo_name):
+    username = "test"
+    repo_name = "test"
+    return render_template('repository.html', username=username, repo_name=repo_name)
             
 
 app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)

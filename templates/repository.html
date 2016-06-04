@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{username + "/" + repo_name }}</title>
+    <link href="/static/css/file-tree.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link href="/static/js/file-tree.min.js" rel="stylesheet">
+    <style type="text/css">
+        body {
+            margin-top: 70px;
+        }
+        
+        header {
+            margin-bottom: 40px;
+        }
+        
+        textarea {
+            resize: none;
+        }
+        
+        .file-tree {
+            margin-bottom: 60px;
+            height: 70px;
+        }
+        
+        #demo p.well.well-sm {
+            height: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="demo" class="container">
+        <div class="row">
+            <div class="col-sm-11">
+                <header>
+                    <h2>jQuery File Tree Plugin Demos</h2>
+                </header>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <h3>Fixed tree</h3>
+                <p class="well well-sm">Click on a filename to open the file (for test purpose this wil redirect to Google)</p>
+                <div id="fixed-tree"></div>
+            </div>
+            <div class="col-sm-4">
+                <h3>Selectable tree</h3>
+                <p class="well well-sm">Select a folder or file by clicking on the name</p>
+                <div id="selectable-tree"></div>
+                <div>
+                    <textarea id="selectable-tree-output" rows="5" class="form-control" disabled></textarea>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <h3>Sortable tree</h3>
+                <p class="well well-sm">Drag the folder or file icon to sort the file tree</p>
+                <div id="sortable-tree"></div>
+                <div>
+                    <textarea id="sortable-tree-output" rows="5" class="form-control" disabled></textarea>
+                    <br/>
+                    <div class="btn-group">
+                        <button id="sortable-tree-toObject" class="btn btn-default">To object</button>
+                        <button id="sortable-tree-toJson" class="btn btn-default">To Json</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="/static/js/nestedSortable/jquery.mjs.nestedSortable.js"></script>
+    <script src="/static/js/file-tree.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var data = [{
+                id: 'dir-1',
+                name: 'Root',
+                type: 'dir',
+                children: [{
+                    id: 'dir-2',
+                    name: 'Sub_dir',
+                    type: 'dir',
+                    children: [{
+                        id: 'file-1',
+                        name: 'file-tree-master.zip',
+                        type: 'zip',
+                        url: 'http://www.jqueryscript.net/other/Nice-File-Tree-View-Plugin-with-jQuery-Bootstrap-File-Tree.html'
+                    }]
+                }, {
+                    id: 'file-2',
+                    name: 'File tree',
+                    type: 'zip',
+                    url: 'http://www.jqueryscript.net/other/Nice-File-Tree-View-Plugin-with-jQuery-Bootstrap-File-Tree.html'
+                }]
+            }];
+
+            $('#fixed-tree').fileTree({
+                data: data
+            });
+
+            var sortableTree = $('#sortable-tree').fileTree({
+                data: data,
+                sortable: true
+            });
+
+            var selectableTree = $('#selectable-tree').fileTree({
+                data: data,
+                selectable: true
+            });
+
+            selectableTree.bind('itemSelected', function(e, el) {
+                var output = 'Selected item:' + "\n";
+                output += 'ID: ' + $(el).data('id') + "\n";
+                output += 'Name: ' + $(el).data('name') + "\n";
+                output += 'Type: ' + $(el).data('type');
+                $('#selectable-tree-output').val(output);
+            });
+
+            $('#sortable-tree-toObject').bind('click', function() {
+                $('#sortable-tree-output').val('Inspect the object in your browser console.');
+                console.log(sortableTree.fileTree('toObject'));
+            });
+
+            $('#sortable-tree-toJson').bind('click', function() {
+                var output = sortableTree.fileTree('toJson');
+                $('#sortable-tree-output').val(output);
+                console.log(output);
+            });
+
+        });
+    </script>
+</body>
+
+</html>
