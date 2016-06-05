@@ -123,6 +123,12 @@ def create_repo_action():
     commands.getstatusoutput("mkdir repositories/%s/%s" % (escape(username), escape(repo_name)))
     commands.getstatusoutput("git init --bare repositories/%s/%s" % (escape(username), escape(repo_name)))
     return redirect(url_for('profile', username=username, success=success))
+    
+@app.route('/profile/<username>/<repo_name>', methods=['GET','POST'])
+def repository(username, repo_name):
+    username = "test"
+    repo_name = "test"
+    return render_template('repository.html', username=username, repo_name=repo_name)
             
 
 app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
