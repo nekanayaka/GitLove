@@ -125,6 +125,7 @@ def create_repo_action():
     success = "Repository %s created!" % repo_name
     os.makedirs("repositories/%s/%s" % (escape(username), escape(repo_name)))
     commands.getstatusoutput("git init --bare repositories/%s/%s" % (escape(username), escape(repo_name)))
+    commands.getstatusoutput("git clone repositories/%s/%s(child)" % (escape(username), escape(repo_name)))
     return redirect(url_for('profile', username=username, success=success))
 
 # @app.route('/repository/<repo_name>', methods=['POST'])
