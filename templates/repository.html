@@ -60,9 +60,10 @@
                 id: 'dir-1',
                 name: 'Root',
                 type: 'dir',
+{#                {% for folder in repo_structure[1] %}#}
                 children: [{
-                    id: 'dir-2',
-                    name: 'Sub_dir',
+                    id: 'test',
+                    name: 'test',
                     type: 'dir',
                     children: [{
                         id: 'file-1',
@@ -70,7 +71,9 @@
                         type: 'zip',
                         url: 'http://www.jqueryscript.net/other/Nice-File-Tree-View-Plugin-with-jQuery-Bootstrap-File-Tree.html'
                     }]
-                }, {
+                },
+{#                {% endfor %}#}
+                    {
                     id: 'file-2',
                     name: 'File tree',
                     type: 'zip',

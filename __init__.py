@@ -133,8 +133,23 @@ def create_repo_action():
 #     return ""
 @app.route('/profile/<username>/<repo_name>', methods=['GET','POST'])
 def repository(username, repo_name):
-    username = "test"
-    repo_name = "test"
+    # repo_structure = []
+    commands.getstatusoutput("git pull")
+    exclude = set([".git"])
+    for root, dirs, files in os.walk("repositories/%s/%s(child)" %((escape(username), escape(repo_name)))):
+        dirs[:] = [d for d in dirs if d not in exclude]
+        # print root
+        # print dirs
+        # print files
+        # repo_structure.append(str(os.path.basename(root)))
+        # repo_structure.append(dirs)
+        # repo_structure.append(files)
+        data = [{}]
+
+    # for x in range(0, len(repo_structure)/3):
+    #     for dir in repo_structure[x]:
+    #                 print dir
+
     return render_template('repository.html', username=username, repo_name=repo_name)
             
 

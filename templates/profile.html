@@ -79,7 +79,7 @@
                     <input type="submit" value="Create repository" class="btn btn-success btn-lg">
                     <ul class="list-group">
                       {% for repo in repos %}
-                          <li class="list-group-item">{{ repo[0] }}</li>
+                          <li class="list-group-item"><a href="{{ url_for('repository', username=username, repo_name=repo[0]) }}">{{ repo[0] }}</a></li>
                       {% endfor %}
                     </ul>
                 </form>
