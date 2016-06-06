@@ -89,7 +89,7 @@ def register():
         cursor.execute("INSERT INTO users (`name`, `username`, `email`, `password`) VALUES ('%s', '%s', '%s', '%s')" % (escape(name), escape(username), escape(email), escape(password)))
         mysql.connection.commit()
         success =  "Profile created successfully."
-        commands.getstatusoutput("mkdir repositories/%s" % escape(username))
+        os.makedirs("repositories/%s" % escape(username))
         return render_template('index.html', success=success)
     else:
         error = "Passwords don't match."
@@ -123,7 +123,7 @@ def create_repo_action():
     mysql.connection.commit()
     # I will have to add validation here!
     success = "Repository %s created!" % repo_name
-    commands.getstatusoutput("mkdir repositories/%s/%s" % (escape(username), escape(repo_name)))
+    os.makedirs("repositories/%s/%s" % (escape(username), escape(repo_name)))
     commands.getstatusoutput("git init --bare repositories/%s/%s" % (escape(username), escape(repo_name)))
     return redirect(url_for('profile', username=username, success=success))
 
@@ -137,7 +137,7 @@ def repository(username, repo_name):
     return render_template('repository.html', username=username, repo_name=repo_name)
             
 
-app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
+# app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug = True)
