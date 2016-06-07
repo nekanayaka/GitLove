@@ -124,8 +124,8 @@ def create_repo_action():
     # I will have to add validation here!
     success = "Repository %s created!" % repo_name
     os.makedirs("repositories/%s/%s" % (escape(username), escape(repo_name)))
+    os.makedirs("repositories/%s_clones" % escape(username))
     commands.getstatusoutput("git init --bare repositories/%s/%s" % (escape(username), escape(repo_name)))
-    commands.getstatusoutput("git clone repositories/%s/%s(child)" % (escape(username), escape(repo_name)))
     return redirect(url_for('profile', username=username, success=success))
 
 # @app.route('/repository/<repo_name>', methods=['POST'])
@@ -134,6 +134,7 @@ def create_repo_action():
 @app.route('/profile/<username>/<repo_name>', methods=['GET','POST'])
 def repository(username, repo_name):
     # repo_structure = []
+    commands.getstatusoutput("git clone repositories/%s/%s repositories/%s_clones/%s" % (escape(username), escape(repo_name), escape(username), escape(repo_name)))
     commands.getstatusoutput("git pull")
     exclude = set([".git"])
     for root, dirs, files in os.walk("repositories/%s/%s(child)" %((escape(username), escape(repo_name)))):
@@ -144,7 +145,7 @@ def repository(username, repo_name):
         # repo_structure.append(str(os.path.basename(root)))
         # repo_structure.append(dirs)
         # repo_structure.append(files)
-        data = [{}]
+        # data = [{}]
 
     # for x in range(0, len(repo_structure)/3):
     #     for dir in repo_structure[x]:
@@ -153,7 +154,7 @@ def repository(username, repo_name):
     return render_template('repository.html', username=username, repo_name=repo_name)
             
 
-# app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
+app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug = True)
