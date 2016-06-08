@@ -57,8 +57,8 @@
     <script type="text/javascript">
         $(document).ready(function() {
             var data = [{
-                id: 'dir-1',
-                name: 'Root',
+                id: '{{ repo_structure[0] }}',
+                name: '{{ repo_structure[0] }}',
                 type: 'dir',
                 children: [{
                     id: 'test',
@@ -78,6 +78,7 @@
                     url: 'http://www.jqueryscript.net/other/Nice-File-Tree-View-Plugin-with-jQuery-Bootstrap-File-Tree.html'
                 }]
             }];
+{#            var data = {{ data }}#}
 
             $('#fixed-tree').fileTree({
                 data: data

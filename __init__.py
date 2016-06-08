@@ -133,28 +133,31 @@ def create_repo_action():
 #     return ""
 @app.route('/profile/<username>/<repo_name>', methods=['GET','POST'])
 def repository(username, repo_name):
-    # repo_structure = []
+    repo_structure = []
     commands.getstatusoutput("git clone repositories/%s/%s repositories/%s_clones/%s" % (escape(username), escape(repo_name), escape(username), escape(repo_name)))
     commands.getstatusoutput("git pull")
     exclude = set([".git"])
-    for root, dirs, files in os.walk("repositories/%s/%s(child)" %((escape(username), escape(repo_name)))):
+    data = ''
+    for root, dirs, files in os.walk("repositories/%s_clones/%s" %((escape(username), escape(repo_name)))):
         dirs[:] = [d for d in dirs if d not in exclude]
         # print root
         # print dirs
         # print files
-        # repo_structure.append(str(os.path.basename(root)))
-        # repo_structure.append(dirs)
-        # repo_structure.append(files)
-        # data = [{}]
+        print root, dirs, files
+        repo_structure.append(str(os.path.basename(root)))
+        repo_structure.append(dirs)
+        repo_structure.append(files)
+        # data = "[{id: %s, name: %s, type: 'dir', children: [{id: %s, name: %s, type: dir, url: http://nimna.me }]}]" % (escape(root), escape(root), escape(dirs), escape(dirs))
 
+    print repo_structure
     # for x in range(0, len(repo_structure)/3):
     #     for dir in repo_structure[x]:
     #                 print dir
 
-    return render_template('repository.html', username=username, repo_name=repo_name)
+    return render_template('repository.html', username=username, repo_name=repo_name, repo_structure=repo_structure)
             
 
-app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
+# app.run(host = os.getenv('IP', '0.0.0.0'), port = int(os.getenv('PORT', 8080)), debug = True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug = True)
